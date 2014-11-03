@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.3</version>
+    <title>Easy Insight</title>
+    <authors>edberg</authors>
+    <owners>edberg</owners>
+    <projectUrl>https://github.com/edberg/easyinsight</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a .NET portable class library for the Easy Insight product from Easy Insight LLC, see http://easy-insight.com.</description>
+    <copyright>Copyright 2014</copyright>
+    <tags>Easy Insight</tags>
+  </metadata>
+</package>
