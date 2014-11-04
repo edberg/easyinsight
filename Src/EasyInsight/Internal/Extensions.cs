@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using EasyInsight;
+using System.Reflection;
 
 namespace EasyInsight.Internal
 {
@@ -13,6 +14,11 @@ namespace EasyInsight.Internal
         public static DataSourceAttribute GetDataSource(this Type type)
         {
             return Attribute.GetCustomAttribute(type, typeof(DataSourceAttribute)) as DataSourceAttribute;
+        }
+
+        public static DataFieldAttribute GetDataField(this MemberInfo member)
+        {
+            return member.GetCustomAttributes(typeof(DataFieldAttribute), true).Cast<DataFieldAttribute>().FirstOrDefault();
         }
 
         public static List<DataFieldAttribute> GetDataFields(this Type type)

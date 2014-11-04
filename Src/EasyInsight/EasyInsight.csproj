@@ -53,6 +53,7 @@
     <Compile Include="DataSourceAttribute.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="EasyInsightFactory.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Internal\EasyInsightService.cs" />
     <Compile Include="Internal\Extensions.cs" />
     <Compile Include="IEasyInsight.cs" />

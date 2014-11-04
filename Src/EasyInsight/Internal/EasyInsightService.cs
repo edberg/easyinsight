@@ -41,7 +41,7 @@ namespace EasyInsight.Internal
             return result;
         }
 
-        private async Task<string> Define(Type type)
+        public async Task Define(Type type)
         {
             var dataSource = type.GetDataSource();
             var datafields = type.GetDataFields();
@@ -56,14 +56,13 @@ namespace EasyInsight.Internal
                 )
             );
             var xml = defineDataSource.ToString();
-            var result = await Post("defineDataSource", xml);
-            return result.GetResponse().DataSourceKey;
+            await Post("defineDataSource", xml);
         }
 
         private async Task Post<T>(string command, IEnumerable<T> data)
         {
             var type = typeof(T);
-            var key = await Define(type);
+                await Define(type);
             var dataSource = type.GetDataSource();
             var dataRows = (from d in data select d.GetData()).ToList();
             var rows = new XElement("rows",
@@ -108,7 +107,7 @@ namespace EasyInsight.Internal
                 new XElement("transactionID", transactionId)
             );
             var xml = beginTransaction.ToString();
-            var result = await Post("commit", xml);
+            await Post("commit", xml);
         }
 
         public async Task Add<T>(IEnumerable<T> data)
@@ -118,7 +117,7 @@ namespace EasyInsight.Internal
             {
                 var type = typeof(T);
                 var ds = typeof(T).GetDataSource().name;
-                var key = await Define(type);
+                await Define(type);
                 var transactionid = await BeginTransaction(ds, false);
                 await data.ForEachPage(PageSize, async (page) => { await Load(transactionid, page); });
                 await Commit(transactionid);
@@ -132,11 +131,35 @@ namespace EasyInsight.Internal
             {
                 var type = typeof(T);
                 var ds = typeof(T).GetDataSource().name;
-                var key = await Define(type);
+                await Define(type);
                 var transactionid = await BeginTransaction(ds, true);
                 await data.ForEachPage(PageSize, async (page) => { await Load(transactionid, page); });
                 await Commit(transactionid);
             }
+        }
+
+        public async Task DefineComposite(string name, IEnumerable<Connection> connections)
+        {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("You must specify name", "name");
+            if (connections == null || connections.Count() == 0) throw new ArgumentException("You must provide at least one connection", "connections");
+
+            var sources = connections.Select(c => c.SourceDataSource).Union(connections.Select(c => c.TargetDataSource));
+            var defineCompositeDataSource = new XElement("defineCompositeDataSource",
+                new XElement("dataSourceName", name),
+                new XElement("dataSources", sources.Select(c =>
+                    new XElement("dataSource", c))
+                ),
+                new XElement("connections", connections.Select(c =>
+                    new XElement("connection",
+                        new XElement("sourceDataSource", c.SourceDataSource),
+                        new XElement("targetDataSource", c.TargetDataSource),
+                        new XElement("sourceDataSourceField", c.SourceDataField),
+                        new XElement("targetDataSourceField", c.TargetDataField)
+                    )
+                ))
+            );
+            var xml = defineCompositeDataSource.ToString();
+            await Post("defineCompositeDataSource", xml);
         }
     }
 }
