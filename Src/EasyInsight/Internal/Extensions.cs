@@ -39,8 +39,7 @@ namespace EasyInsight.Internal
 
         public static string FormatData(this object obj)
         {
-            if (obj is DateTime)
-                return ((DateTime)obj).ToString("s");
+            if (obj is DateTime) return ((DateTime)obj).ToUniversalTime().ToString("s");
             return obj.ToString();
         }
 
