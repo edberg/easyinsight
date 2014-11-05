@@ -68,5 +68,17 @@ namespace EasyInsight.Internal
             }
         }
 
+        public static string GetSourceCardinality(this Cardinality cardinality)
+        {
+            if (cardinality == Cardinality.ManyToOne) return "many";
+            return "one";
+        }
+
+        public static string GetTargetCardinality(this Cardinality cardinality)
+        {
+            if (cardinality == Cardinality.OneToMany) return "many";
+            return "one";
+        }
+
     }
 }

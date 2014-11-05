@@ -49,6 +49,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cardinality.cs" />
     <Compile Include="DataFieldAttribute.cs" />
     <Compile Include="DataSourceAttribute.cs" />
     <Compile Include="DataType.cs" />

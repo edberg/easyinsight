@@ -151,8 +151,12 @@ namespace EasyInsight.Internal
                 ),
                 new XElement("connections", connections.Select(c =>
                     new XElement("connection",
-                        new XElement("sourceDataSource", c.SourceDataSource),
-                        new XElement("targetDataSource", c.TargetDataSource),
+                        new XElement("sourceDataSource", c.SourceDataSource, 
+                            new XAttribute("cardinality", c.SourceCardinality)
+                        ),
+                        new XElement("targetDataSource", c.TargetDataSource, 
+                            new XAttribute("cardinality", c.TargetCardinality)
+                        ),
                         new XElement("sourceDataSourceField", c.SourceDataField),
                         new XElement("targetDataSourceField", c.TargetDataField)
                     )

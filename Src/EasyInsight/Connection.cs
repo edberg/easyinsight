@@ -9,12 +9,14 @@ namespace EasyInsight
     {
         public string SourceDataSource { get; private set; }
         public string SourceDataField { get; private set; }
+        public string SourceCardinality { get; private set; }
         public string TargetDataSource { get; private set; }
         public string TargetDataField { get; private set; }
+        public string TargetCardinality { get; private set; }
 
         internal Connection() { }
 
-        public static Connection Create<Source, Target>(Expression<Func<Source, object>> source, Expression<Func<Target, object>> target)
+        public static Connection Create<Source, Target>(Expression<Func<Source, object>> source, Expression<Func<Target, object>> target, Cardinality cardinality = Cardinality.OneToOne)
         {
             var sourceDataSource = GetMemberInfo(source).Member.DeclaringType.GetDataSource();
             var sourceDataField = GetMemberInfo(source).Member.GetDataField();
@@ -30,8 +32,10 @@ namespace EasyInsight
             {
                 SourceDataSource = sourceDataSource.name,
                 SourceDataField = sourceDataField.name,
+                SourceCardinality = cardinality.GetSourceCardinality(),
                 TargetDataSource = targetDataSource.name,
                 TargetDataField = targetDataField.name,
+                TargetCardinality = cardinality.GetTargetCardinality(),
             };
         }
 
