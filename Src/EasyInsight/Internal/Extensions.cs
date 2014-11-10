@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using EasyInsight;
 using System.Reflection;
+using System.Globalization;
 
 namespace EasyInsight.Internal
 {
@@ -39,8 +40,10 @@ namespace EasyInsight.Internal
 
         public static string FormatData(this object obj)
         {
+            var culture = CultureInfo.InvariantCulture;
             if (obj is DateTime) return ((DateTime)obj).ToUniversalTime().ToString("s");
-            return obj.ToString();
+            if (obj == null) return string.Empty;
+            return Convert.ToString(obj, culture);
         }
 
         public static Response GetResponse(this string response)

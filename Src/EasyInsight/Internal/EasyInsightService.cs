@@ -62,7 +62,7 @@ namespace EasyInsight.Internal
         private async Task Post<T>(string command, IEnumerable<T> data)
         {
             var type = typeof(T);
-                await Define(type);
+            await Define(type);
             var dataSource = type.GetDataSource();
             var dataRows = (from d in data select d.GetData()).ToList();
             var rows = new XElement("rows",
